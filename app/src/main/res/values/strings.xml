@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Reddit</string>
+    <string name="author">r/author</string>
+    <string name="hours">•xx hr. ago</string>
+    <string name="title">Title</string>
+    <string name="thumbnail">Thumbnail</string>
+    <string name="num_comments">###</string>
 </resources>
