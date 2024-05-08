@@ -1,39 +1,27 @@
 package com.example.reddit.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.reddit.Post
 import com.example.reddit.databinding.FragmentHomeBinding
+import com.example.reddit.network.RedditService
+import com.example.reddit.network.RetrofitClient
+import com.example.reddit.toPost
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class FragmentHome: Fragment() {
-    private val adapter: PostAdapter by lazy { PostAdapter(
-        {
+class FragmentHome : Fragment() {
+    private val adapter: PostAdapter by lazy { PostAdapter {
 
-        }
-    )}
+    } }
     private var binding: FragmentHomeBinding? = null
-    private val list = listOf(
-        Post(
-            id = "12ascsa123",
-            title = "Hello title",
-            author = "/r artur",
-            thumbnail = "https://media.4-paws.org/5/b/4/b/5b4b5a91dd9443fa1785ee7fca66850e06dcc7f9/VIER%20PFOTEN_2019-12-13_209-2890x2000-1920x1329.jpg",
-            hoursAgo = 12,
-            commentsCount = 415
-        ),
 
-        Post(
-            id = "345scsa123",
-            title = "Good bye, title",
-            author = "/r artur",
-            thumbnail = "https://media.4-paws.org/5/b/4/b/5b4b5a91dd9443fa1785ee7fca66850e06dcc7f9/VIER%20PFOTEN_2019-12-13_209-2890x2000-1920x1329.jpg",
-            hoursAgo = 12,
-            commentsCount = 415
-        )
-    )
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,7 +32,23 @@ class FragmentHome: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding?.recyclerPost?.adapter = adapter
-        adapter.submitList(list)
+        super.onViewCreated(view, savedInstanceState)
+        val redditService = RetrofitClient.redditService
+        lifecycleScope.launch {
+            val redditPosts = getTopPosts(redditService)
+            binding?.recyclerPost?.adapter = adapter
+            adapter.submitList(redditPosts)
+        }
+    }
+    private suspend fun getTopPosts(redditService: RedditService): List<Post> {
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = redditService.getTopPosts()
+                response.data.children.map { it.toPost() }
+            } catch (e: Exception) {
+                Log.w("FragmentHome", "Помилка при отриманні публікацій з Reddit", e)
+                emptyList()
+            }
+        }
     }
 }

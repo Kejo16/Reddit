@@ -3,29 +3,28 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 data class Post(
-    val id: String,
-    val author: String,
-    val title: String,
+    val id: String?,
+    val author: String?,
+    val title: String?,
     val hoursAgo: Long,
-    val thumbnail: String? = null,
+    val thumbnail: String?,
     val commentsCount: Int,
-    val image: String? = null,
+    val image: String?,
 )
 
 fun TopResponse.PostData.toPost(): Post {
     val createdAt = createdAt.toInt()
     val hours = System.currentTimeMillis() - createdAt / 1000 / 3600
     return Post(
-        id = "",
+        id = id,
         author = author,
-        title = "",
+        title = title,
         hoursAgo = hours,
-        thumbnail = preview?.images?.get(0)?.resolutions?.get(0)?.url,
-        commentsCount = commentsQuantity,
-        image = preview?.images?.get(0)?.source?.url
+        thumbnail = thumbnail,//preview?.images?.get(0)?.resolutions?.get(0)?.url,
+        commentsCount = commentsCount,
+        image = image //preview?.images?.get(0)?.source?.url
     )
 }
-
 
 @Serializable
 data class TopResponse(
@@ -38,15 +37,22 @@ data class TopResponse(
 
     @Serializable
     data class PostData(
-        @SerialName("author_fullname")
+        @SerialName("id")
+        val id: String,
+        @SerialName("subreddit")
         val author: String,
+        @SerialName("title")
+        val title: String,
         @SerialName("created")
-        val createdAt: String,
+        val createdAt: Double,
+        @SerialName("thumbnail")
+        val thumbnail: String,
         @SerialName("num_comments")
-        val commentsQuantity: Int,
-        @SerialName("preview")
-        val preview: Preview?
-    ) {
+        val commentsCount: Int,
+        @SerialName("url")
+        val image: String
+
+    ) /*{
         @Serializable
         data class Preview(
             @SerialName("images") val images: List<ImageData> = emptyList()
@@ -67,5 +73,7 @@ data class TopResponse(
         data class Resolution(
             @SerialName("url") val url: String? = null
         )
-    }
+    }*/
 }
+
+

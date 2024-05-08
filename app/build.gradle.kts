@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.internal.Kapt3GradleSubplugin.Companion.findKaptConfiguration
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -51,6 +53,9 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.navigation.fragment.ktx)
     implementation(libs.glide)
+    implementation(libs.retrofit2)
+    implementation(libs.gson)
+    implementation(libs.coroutines)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
