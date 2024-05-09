@@ -7,5 +7,4 @@
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
     xmlns:tools="http://schemas.android.com/tools"
     tools:listitem="@layout/item_post"
-    tools:itemCount="3"
-        />
+    />

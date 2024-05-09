@@ -1,16 +1,29 @@
 package com.example.reddit.network
 
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
 
     private const val BASE_URL = "https://www.reddit.com/"
 
+    private val json: Json by lazy {
+        Json {
+            ignoreUnknownKeys = true
+            coerceInputValues = true
+            explicitNulls = false
+            encodeDefaults = true
+        }
+    }
+
     val redditService: RedditService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(
+                json.asConverterFactory("application/json".toMediaType())
+            )
             .build()
             .create(RedditService::class.java)
     }

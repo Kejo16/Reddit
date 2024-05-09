@@ -1,10 +1,13 @@
 package com.example.reddit.ui.home
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.reddit.Post
@@ -18,7 +21,9 @@ import kotlinx.coroutines.withContext
 
 class FragmentHome : Fragment() {
     private val adapter: PostAdapter by lazy { PostAdapter {
-
+        url ->
+        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+        startActivity(intent)
     } }
     private var binding: FragmentHomeBinding? = null
 
@@ -40,11 +45,12 @@ class FragmentHome : Fragment() {
             adapter.submitList(redditPosts)
         }
     }
+
     private suspend fun getTopPosts(redditService: RedditService): List<Post> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = redditService.getTopPosts()
-                response.data.children.map { it.toPost() }
+                response.data.children.map {it.data.toPost()  }
             } catch (e: Exception) {
                 Log.w("FragmentHome", "Помилка при отриманні публікацій з Reddit", e)
                 emptyList()

@@ -1,7 +1,7 @@
 package com.example.reddit.ui.home
 
 import android.annotation.SuppressLint
-import androidx.core.net.toUri
+import android.view.View
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 import com.example.reddit.Post
@@ -14,23 +14,28 @@ class PostViewHolder(
     @SuppressLint("SetTextI18n")
     fun bind(post: Post) {
         with(binding) {
+            authorTextView.text = "r/" + post.author
+            hoursTextView.text = "•${post.hoursAgo} hr. ago"
             titleTextView.text = post.title
-            authorTextView.text = post.author
-            hoursTextView.text = "${post.hoursAgo} hours ago"
             commentCountTextView.text = post.commentsCount.toString()
-            thumbnailImageView.setImageURI(post.thumbnail?.toUri());
-            post.thumbnail?.let { loadThumbnail(it) }
-            root.setOnClickListener {
+            if(post.thumbnail.isNullOrBlank()){
+                thumbnailImageView.visibility = View.GONE
+            }else{
+                loadThumbnail(post.thumbnail)
+            }
+
+            thumbnailImageView.setOnClickListener{
                 val url = post.image ?: return@setOnClickListener
                 onClick(url)
             }
         }
-
     }
 
-    private fun loadThumbnail(url: String) {
-        Glide.with(binding.root)
-            .load(url)
-            .into(binding.thumbnailImageView)
+    private fun loadThumbnail(url: String?) {
+        url?.let {
+            Glide.with(binding.root)
+                .load(it)
+                .into(binding.thumbnailImageView)
+        }
     }
 }

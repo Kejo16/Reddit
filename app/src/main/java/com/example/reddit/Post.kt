@@ -13,16 +13,16 @@ data class Post(
 )
 
 fun TopResponse.PostData.toPost(): Post {
-    val createdAt = createdAt.toInt()
-    val hours = System.currentTimeMillis() - createdAt / 1000 / 3600
+    val createdAt = createdAt.toLong()
+    val hours = (System.currentTimeMillis() - (createdAt*1000)) / 1000 / 3600
     return Post(
         id = id,
         author = author,
         title = title,
         hoursAgo = hours,
-        thumbnail = thumbnail,//preview?.images?.get(0)?.resolutions?.get(0)?.url,
+        thumbnail = thumbnail,
         commentsCount = commentsCount,
-        image = image //preview?.images?.get(0)?.source?.url
+        image = image
     )
 }
 
@@ -32,9 +32,14 @@ data class TopResponse(
 ) {
     @Serializable
     data class ResponseData(
-        @SerialName("children") val children: List<PostData>
+        @SerialName("children") val children: List<InnerData>
     )
 
+    @Serializable
+    data class InnerData(
+        @SerialName("data") val data: PostData
+    )
+    
     @Serializable
     data class PostData(
         @SerialName("id")
