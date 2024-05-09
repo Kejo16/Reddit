@@ -2,6 +2,7 @@ package com.example.reddit
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+
 data class Post(
     val id: String?,
     val author: String?,
@@ -57,28 +58,7 @@ data class TopResponse(
         @SerialName("url")
         val image: String
 
-    ) /*{
-        @Serializable
-        data class Preview(
-            @SerialName("images") val images: List<ImageData> = emptyList()
-        )
-
-        @Serializable
-        data class ImageData(
-            @SerialName("source") val source: Source?,
-            @SerialName("resolutions") val resolutions: List<Resolution> = emptyList()
-        )
-
-        @Serializable
-        data class Source(
-            @SerialName("url") val url: String? = null
-        )
-
-        @Serializable
-        data class Resolution(
-            @SerialName("url") val url: String? = null
-        )
-    }*/
+    )
 }
 
 
