@@ -13,6 +13,8 @@ import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.reddit.Post
 import com.example.reddit.databinding.FragmentHomeBinding
 import com.example.reddit.network.RedditService
@@ -29,6 +31,9 @@ class FragmentHome : Fragment() {
         onClick = { url -> openUrl(url) },
         onLongClick = { url -> downloadImage(url) }
     ) }
+
+    private var isLoading = false // Flag to prevent concurrent loading
+    private val pageSize = 25
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +52,23 @@ class FragmentHome : Fragment() {
         viewModel.redditPosts.observe(viewLifecycleOwner) { redditPosts ->
             adapter.submitList(redditPosts)
         }
+
+        binding?.recyclerPost?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+                val visibleItemCount = layoutManager.childCount
+                val totalItemCount = layoutManager.itemCount
+                val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+                if (!isLoading && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                    && firstVisibleItemPosition >= 0 && totalItemCount >= pageSize) {
+                    isLoading = true
+                    viewModel.loadRedditPosts()
+                    isLoading = false
+                }
+            }
+        })
 
         if (savedInstanceState == null) {
             viewModel.loadRedditPosts()

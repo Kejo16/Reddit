@@ -2,7 +2,6 @@ package com.example.reddit
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 data class Post(
     val id: String?,
     val author: String?,
@@ -33,6 +32,8 @@ data class TopResponse(
 ) {
     @Serializable
     data class ResponseData(
+        @SerialName("after")
+        val after: String?,
         @SerialName("children") val children: List<InnerData>
     )
 

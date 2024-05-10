@@ -2,15 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="20dp"
-    >
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/authorTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/author"
+        android:textColor="@color/author"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,42 +21,93 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/hours"
+        android:textColor="@color/author"
         app:layout_constraintStart_toEndOf="@id/authorTextView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/authorTextView" />
 
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:minHeight="80dp"
+
         android:text="@string/title"
+        android:textColor="@color/post"
         app:layout_constraintEnd_toStartOf="@id/thumbnailImageView"
         app:layout_constraintStart_toStartOf="@id/authorTextView"
-        app:layout_constraintTop_toBottomOf="@id/authorTextView"
-        />
+        app:layout_constraintTop_toBottomOf="@id/authorTextView" />
 
     <ImageView
         android:id="@+id/thumbnailImageView"
-        android:layout_width="120dp"
-        android:layout_height="60dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/thumbnail"
-        android:src="@color/pink"
-        android:text="@string/title"
+        android:src="@color/blank_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/titleTextView"
-        app:layout_constraintTop_toBottomOf="@id/authorTextView" />
+        app:layout_constraintTop_toTopOf="@id/titleTextView" />
+
+    <View
+        android:id="@+id/commentGroup"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/comment_background"
+        app:layout_constraintBottom_toBottomOf="@id/commentCountTextView"
+        app:layout_constraintEnd_toEndOf="@id/commentBarrier"
+        app:layout_constraintStart_toStartOf="@id/titleTextView"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+
+    <ImageView
+        android:id="@+id/commentImageView"
+        android:layout_width="16sp"
+        android:layout_height="16sp"
+        android:layout_marginStart="8dp"
+        android:contentDescription="@string/thumbnail"
+        android:src="@mipmap/comment"
+        app:layout_constraintBottom_toBottomOf="@id/commentGroup"
+        app:layout_constraintStart_toStartOf="@id/commentGroup"
+        app:layout_constraintTop_toTopOf="@id/commentGroup" />
 
     <TextView
         android:id="@+id/commentCountTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/num_comments"
-        app:layout_constraintStart_toStartOf="@id/titleTextView"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView" />
+        android:textColor="@color/post"
+        app:layout_constraintBottom_toBottomOf="@id/commentGroup"
+        app:layout_constraintEnd_toEndOf="@id/commentGroup"
+        app:layout_constraintStart_toEndOf="@id/commentImageView"
+        app:layout_constraintTop_toTopOf="@id/commentGroup" />
 
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/commentBarrier"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:barrierDirection="right"
+        app:layout_constraintEnd_toEndOf="@id/commentCountTextView" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/line"
+        app:layout_constraintTop_toBottomOf="@id/commentGroup" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

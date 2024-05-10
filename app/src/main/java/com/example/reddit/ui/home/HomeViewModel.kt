@@ -17,20 +17,34 @@ class HomeViewModel : ViewModel() {
     private val _redditPosts = MutableLiveData<List<Post>>()
     val redditPosts: LiveData<List<Post>> = _redditPosts
 
+    private var after: String? = null
+    private var count = 0
+    private val limit = 25
+
     fun loadRedditPosts() {
         viewModelScope.launch {
-            val posts = getTopPosts()
-            _redditPosts.value = posts
+            try {
+                val posts = getTopPosts(after, count, limit)
+                _redditPosts.value = posts
+            } catch (e: Exception) {
+                Log.w("HomeViewModel", "Failed to load Reddit posts", e)
+            }
         }
     }
 
-    private suspend fun getTopPosts(): List<Post> {
+    private suspend fun getTopPosts(after: String?, count: Int, limit: Int): List<Post> {
         return withContext(Dispatchers.IO) {
             try {
-                val response = redditService.getTopPosts()
+                val response = redditService.getTopPosts(
+                    after = after,
+                    limit = limit,
+                    count = count
+                )
+                this@HomeViewModel.after = response.data.after
+                this@HomeViewModel.count += response.data.children.size
                 response.data.children.map { it.data.toPost() }
             } catch (e: Exception) {
-                Log.w("HomeViewModel", "Помилка при отриманні публікацій з Reddit", e)
+                Log.w("HomeViewModel", "Failed to get top Reddit posts", e)
                 emptyList()
             }
         }

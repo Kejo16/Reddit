@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="pink">#FFFF88BB</color>
-
+    <color name="blank_image">#ff88bb</color>
+    <color name="home_background">#0e1113</color>
+    <color name="author">#8ba2ad</color>
+    <color name="post">#ffffff</color>
+    <color name="line">#27292b</color>
+    <color name="comment">#333d42</color>
 </resources>
