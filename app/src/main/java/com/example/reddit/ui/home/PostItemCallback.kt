@@ -1,7 +1,7 @@
 package com.example.reddit.ui.home
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.reddit.Post
+import com.example.reddit.model.Post
 
 object PostItemCallback : DiffUtil.ItemCallback<Post>() {
 

@@ -1,30 +1,7 @@
-package com.example.reddit
+package com.example.reddit.data.network.response
+
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-
-data class Post(
-    val id: String?,
-    val author: String?,
-    val title: String?,
-    val hoursAgo: Long,
-    val thumbnail: String?,
-    val commentsCount: Int,
-    val image: String?,
-)
-
-fun TopResponse.PostData.toPost(): Post {
-    val createdAt = createdAt.toLong()
-    val hours = (System.currentTimeMillis() - (createdAt*1000)) / 1000 / 3600
-    return Post(
-        id = id,
-        author = author,
-        title = title,
-        hoursAgo = hours,
-        thumbnail = thumbnail,
-        commentsCount = commentsCount,
-        image = image
-    )
-}
 
 @Serializable
 data class TopResponse(
@@ -41,7 +18,7 @@ data class TopResponse(
     data class InnerData(
         @SerialName("data") val data: PostData
     )
-    
+
     @Serializable
     data class PostData(
         @SerialName("id")
@@ -61,5 +38,3 @@ data class TopResponse(
 
     )
 }
-
-

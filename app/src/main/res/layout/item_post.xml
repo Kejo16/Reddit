@@ -46,6 +46,8 @@
         android:layout_marginEnd="16dp"
         android:contentDescription="@string/thumbnail"
         android:src="@color/blank_image"
+        android:focusable="true"
+        android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/titleTextView"
         app:layout_constraintTop_toTopOf="@id/titleTextView" />
